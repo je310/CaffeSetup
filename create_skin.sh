@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# This script converts the skin image data into lmdb/leveldb format,
+# depending on the value assigned to $BACKEND.
+
+EXAMPLE=/home/josh/caffe/examples/skin
+DATA=/home/josh/catkin_ws/src/manual_segment/src/
+BUILD=/home/josh/caffe/build/tools
+
+BACKEND="lmdb"
+
+echo "Creating ${BACKEND}..."
+
+rm -rf $EXAMPLE/skin_train_${BACKEND}
+rm -rf $EXAMPLE/skin_test_${BACKEND}
+
+$BUILD/convert_imageset.bin $DATA/  $DATA/Labels_train.txt $EXAMPLE/skin_train_${BACKEND} --shuffle --backend=${BACKEND}
+$BUILD/convert_imageset.bin $DATA/  $DATA/Labels_test.txt $EXAMPLE/skin_test_${BACKEND} --shuffle --backend=${BACKEND}
+
+echo "Done."
